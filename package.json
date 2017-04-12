@@ -1,0 +1,17 @@
+{
+  "name": "ReactFundamental",
+  "version": "1.0.0",
+  "description": "Test project to learn React fundamentals",
+  "main": "app.js",
+  "repository": "https://github.com/lacsaba/ReactFundamental.git",
+  "author": "Csaba Lakatos",
+  "license": "MIT",
+  "dependencies": {
+    "react": "^15.5.4",
+    "redux": "^3.6.0"
+  },
+  "devDependencies": {
+    "eslint": "^3.19.0",
+    "webpack": "^2.3.3"
+  }
+}
