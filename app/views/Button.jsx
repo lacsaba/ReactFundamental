@@ -10,16 +10,16 @@ const Button = (props) => {
             button = <button className="btn btn-danger" onClick={props.removeSelectedNumbers}><i className="fa fa-times"></i></button>
             break;
         default:
-            button = <button disabled={props.selectedNumbers.length === 0} className="btn" onClick={props.checkAnswer}>?=</button>
+            button = <button disabled={props.selectedNumbers.length === 0} className="btn" onClick={props.checkAnswer}>=?</button>
             break;
     }
     return (
-        <div className="text-center col-6">
+        <div className="text-center col-2">
             {button}
             <br /><br />
             <button className="btn btn-warning btn-sm" 
                 onClick={props.redraw}
-                disabled={!props.redraws}>
+                disabled={!props.redraws || props.doneStatus}>
                 {props.redraws}<i className="fa fa-refresh"></i></button>
         </div>
     );

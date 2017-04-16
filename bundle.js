@@ -26705,7 +26705,7 @@ var Answer = function Answer(props) {
 
     return _react2.default.createElement(
         "div",
-        { className: "text-center col-3" },
+        { className: "text-center col-4" },
         _react2.default.createElement(
             "div",
             null,
@@ -26758,13 +26758,13 @@ var Button = function Button(props) {
             button = _react2.default.createElement(
                 "button",
                 { disabled: props.selectedNumbers.length === 0, className: "btn", onClick: props.checkAnswer },
-                "?="
+                "=?"
             );
             break;
     }
     return _react2.default.createElement(
         "div",
-        { className: "text-center col-6" },
+        { className: "text-center col-2" },
         button,
         _react2.default.createElement("br", null),
         _react2.default.createElement("br", null),
@@ -26772,7 +26772,7 @@ var Button = function Button(props) {
             "button",
             { className: "btn btn-warning btn-sm",
                 onClick: props.redraw,
-                disabled: !props.redraws },
+                disabled: !props.redraws || props.doneStatus },
             props.redraws,
             _react2.default.createElement("i", { className: "fa fa-refresh" })
         )
@@ -26857,9 +26857,11 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; } // feature requests:
-// - auto továbbmenés helyes egyenlet esetén (ne kelljen kétszer klikkelni)
-// a számokat meg lehessen adni billentyűzettel is
-// legyen timeout
+// - a számokat meg lehessen adni billentyűzettel is
+// - legyen timeout
+// - játék végén is újra generálja a csillagokat
+// - confirm kérdés frissítés esetén, ha van válasz
+
 
 var Game = function (_React$Component) {
     _inherits(Game, _React$Component);
@@ -26907,16 +26909,18 @@ var Game = function (_React$Component) {
                         return acc + n;
                     }, 0) == prevState.randomNumbersOfStars
                 };
-            });
+            }, _this.acceptAnswer);
         }, _this.acceptAnswer = function () {
-            _this.setState(function (prevState) {
-                return {
-                    usedNumbers: prevState.usedNumbers.concat(prevState.selectedNumbers),
-                    selectedNumbers: [],
-                    randomNumbersOfStars: Game.randomNumber(),
-                    answerIsCorrect: null
-                };
-            }, _this.updateDoneStatus);
+            _this.state.answerIsCorrect && setTimeout(function () {
+                _this.setState(function (prevState) {
+                    return {
+                        usedNumbers: prevState.usedNumbers.concat(prevState.selectedNumbers),
+                        selectedNumbers: [],
+                        randomNumbersOfStars: Game.randomNumber(),
+                        answerIsCorrect: null
+                    };
+                }, _this.updateDoneStatus);
+            }, 500);
         }, _this.redraw = function () {
             if (_this.state.redraws <= 0) return;
             _this.setState(function (prevState) {
@@ -26981,10 +26985,17 @@ var Game = function (_React$Component) {
                     null,
                     'Play Nine'
                 ),
+                ' ',
+                _react2.default.createElement(
+                    'small',
+                    null,
+                    'Solve the equation'
+                ),
                 _react2.default.createElement('hr', null),
                 _react2.default.createElement(
                     'div',
                     { className: 'row' },
+                    _react2.default.createElement('div', { className: 'col-1' }),
                     _react2.default.createElement(_Stars2.default, { randomNumbersOfStars: randomNumbersOfStars }),
                     _react2.default.createElement(_Button2.default, { selectedNumbers: selectedNumbers,
                         answerIsCorrect: answerIsCorrect,
@@ -26992,9 +27003,11 @@ var Game = function (_React$Component) {
                         acceptAnswer: this.acceptAnswer,
                         redraw: this.redraw,
                         redraws: redraws,
-                        removeSelectedNumbers: this.removeSelectedNumbers }),
+                        removeSelectedNumbers: this.removeSelectedNumbers,
+                        doneStatus: doneStatus }),
                     _react2.default.createElement(_Answer2.default, { selectedNumbers: selectedNumbers,
-                        unselectNumber: this.unselectNumber })
+                        unselectNumber: this.unselectNumber }),
+                    _react2.default.createElement('div', { className: 'col-1' })
                 ),
                 _react2.default.createElement('br', null),
                 _react2.default.createElement(_Numbers2.default, { selectedNumbers: selectedNumbers,
@@ -27112,7 +27125,7 @@ var Stars = function Stars(props) {
     });
     return _react2.default.createElement(
         'div',
-        { className: 'col-3' },
+        { className: 'col-4' },
         stars
     );
 };

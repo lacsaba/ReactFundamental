@@ -1,8 +1,8 @@
 // feature requests:
-// - auto továbbmenés helyes egyenlet esetén (ne kelljen kétszer klikkelni)
-// a számokat meg lehessen adni billentyűzettel is
-// legyen timeout
-
+// - a számokat meg lehessen adni billentyűzettel is
+// - legyen timeout
+// - játék végén is újra generálja a csillagokat
+// - confirm kérdés frissítés esetén, ha van válasz
 import React from 'react';
 import Button from './Button.jsx';
 import Stars from './Stars.jsx';
@@ -40,17 +40,18 @@ export default class Game extends React.Component {
     checkAnswer = () => {
         this.setState(prevState => ({
             answerIsCorrect: prevState.selectedNumbers.reduce((acc, n) => acc + n, 0) == prevState.randomNumbersOfStars 
-        }));
+        }), this.acceptAnswer);
     };
 
     acceptAnswer = () => {
-        this.setState(prevState => ({
-            usedNumbers: prevState.usedNumbers.concat(prevState.selectedNumbers),
-            selectedNumbers: [],
-            randomNumbersOfStars: Game.randomNumber(),
-            answerIsCorrect: null
-        }), this.updateDoneStatus);
-    };
+        this.state.answerIsCorrect && setTimeout(() => { 
+            this.setState(prevState => ({
+                usedNumbers: prevState.usedNumbers.concat(prevState.selectedNumbers),
+                selectedNumbers: [],
+                randomNumbersOfStars: Game.randomNumber(),
+                answerIsCorrect: null
+            }), this.updateDoneStatus);
+    }, 500)};
 
     redraw = () => {
         if (this.state.redraws <= 0) return;
@@ -108,9 +109,10 @@ export default class Game extends React.Component {
         } = this.state;
         return (
             <div className="container">
-                <h3>Play Nine</h3>
+                <h3>Play Nine</h3> <small>Solve the equation</small>
                 <hr />
                 <div className="row">
+                    <div className="col-1"></div>
                     <Stars randomNumbersOfStars={randomNumbersOfStars}/>
                     <Button selectedNumbers={selectedNumbers}
                         answerIsCorrect= {answerIsCorrect}
@@ -118,9 +120,11 @@ export default class Game extends React.Component {
                         acceptAnswer={this.acceptAnswer}
                         redraw={this.redraw}
                         redraws={redraws}
-                        removeSelectedNumbers={this.removeSelectedNumbers}/>
+                        removeSelectedNumbers={this.removeSelectedNumbers}
+                        doneStatus={doneStatus}/>
                     <Answer selectedNumbers={selectedNumbers}
                         unselectNumber={this.unselectNumber}/>
+                    <div className="col-1"></div>
                 </div>
                 <br />
                 <Numbers selectedNumbers={selectedNumbers}

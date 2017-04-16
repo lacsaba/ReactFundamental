@@ -1,6 +1,6 @@
 .fa-star {
     margin: 0.5em;
-    font-size: 24px;
+    font-size: 26px;
 }
 
 span {
@@ -23,4 +23,17 @@ span {
     background-color: #aaddaa;
     color: #99bb99;
     cursor: not-allowed;
+}
+
+.btn {
+    cursor: pointer;
+}
+
+.container {
+    max-width: 600px;
+    width: 600px;
+}
+
+h3 {
+    display: inline-block;
 }
