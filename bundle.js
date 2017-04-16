@@ -26885,7 +26885,7 @@ var Game = function (_React$Component) {
             redraws: 5,
             doneStatus: null
         }, _this.selectNumber = function (clickedNumber) {
-            if (_this.state.selectedNumbers.indexOf(clickedNumber) > -1) return;
+            if (_this.state.selectedNumbers.indexOf(clickedNumber) > -1 || _this.state.usedNumbers.indexOf(clickedNumber) > -1) return;
             _this.setState(function (prevState) {
                 return {
                     selectedNumbers: prevState.selectedNumbers.concat(clickedNumber),
@@ -26956,6 +26956,7 @@ var Game = function (_React$Component) {
             return possibleCombinationSum(possibleNumbers, randomNumbersOfStars);
         }, _this.updateDoneStatus = function () {
             _this.setState(function (prevState) {
+                console.log(prevState.randomNumbersOfStars);
                 if (prevState.usedNumbers.length === 9) {
                     return { doneStatus: 'Done. Nice!' };
                 }

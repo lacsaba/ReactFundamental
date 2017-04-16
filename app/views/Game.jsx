@@ -22,7 +22,8 @@ export default class Game extends React.Component {
     };
 
     selectNumber = (clickedNumber) => {
-        if (this.state.selectedNumbers.indexOf(clickedNumber) > -1) return;
+        if (this.state.selectedNumbers.indexOf(clickedNumber) > -1
+            || this.state.usedNumbers.indexOf(clickedNumber) > -1) return;
         this.setState(prevState => ({
             selectedNumbers: prevState.selectedNumbers.concat(clickedNumber),
             answerIsCorrect: null
@@ -89,6 +90,7 @@ export default class Game extends React.Component {
     };
     updateDoneStatus = () => {
         this.setState(prevState => {
+            console.log(prevState.randomNumbersOfStars);
             if (prevState.usedNumbers.length === 9) {
                 return { doneStatus: 'Done. Nice!' };
             }
