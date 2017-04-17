@@ -3,20 +3,26 @@ import _ from 'lodash';
 
 const Numbers = (props) => {
     const numberClassName = (number) => {
+        var classes = 'numbers';
         if (props.selectedNumbers.indexOf(number) > -1) {
-            return 'selected';
+            classes += ' selected';
         }
         if (props.usedNumbers.indexOf(number) > -1) {
-            return 'used';
+            classes += ' used';
         }
+        if (props.doneStatus) {
+            classes += ' numbers-disabled';
+        }
+        return classes;
     };
 
     return (
         <div className="text-center">
             {Numbers.list.map((number, i) => 
-                <span key={i}
+                <button key={i}
                     className={numberClassName(number)}
-                    onClick={() => props.selectNumber(number)}>{number}</span>)}
+                    onClick={() => props.selectNumber(number)}
+                    disabled={props.doneStatus}>{number}</button>)}
         </div>
     );
 };

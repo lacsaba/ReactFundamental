@@ -137,7 +137,8 @@ export default class Game extends React.Component {
                 <br />
                 <Numbers selectedNumbers={selectedNumbers}
                     usedNumbers={usedNumbers}
-                    selectNumber={this.selectNumber}/>
+                    selectNumber={this.selectNumber}
+                    doneStatus={doneStatus}/>
                 {doneStatus 
                     ? <Done doneStatus={doneStatus} resetGame={this.resetGame}/>
                     : ''
