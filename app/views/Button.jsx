@@ -4,7 +4,7 @@ const Button = (props) => {
     let button;
     switch (props.answerIsCorrect) {
         case true:
-            button = <button className="btn btn-success" onClick={props.acceptAnswer}><i className="fa fa-check"></i></button>
+            button = <button className="btn btn-success"><i className="fa fa-check"></i></button>
             break;
         case false:
             button = <button className="btn btn-danger" onClick={props.removeSelectedNumbers}><i className="fa fa-times"></i></button>
@@ -20,7 +20,7 @@ const Button = (props) => {
             <button className="btn btn-warning btn-sm" 
                 onClick={props.redraw}
                 disabled={!props.redraws || props.doneStatus}>
-                {props.redraws}<i className="fa fa-refresh"></i></button>
+                {props.redraws} <i className="fa fa-refresh"></i></button>
         </div>
     );
 }

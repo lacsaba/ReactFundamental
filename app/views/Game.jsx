@@ -1,8 +1,3 @@
-// feature requests:
-// - a számokat meg lehessen adni billentyűzettel is
-// - legyen timeout
-// - játék végén is újra generálja a csillagokat
-// - confirm kérdés frissítés esetén, ha van válasz
 import React from 'react';
 import Button from './Button.jsx';
 import Stars from './Stars.jsx';
@@ -56,12 +51,23 @@ export default class Game extends React.Component {
 
     redraw = () => {
         if (this.state.redraws <= 0) return;
-        this.setState(prevState => ({
+
+        var self = this;
+        function doRedraw() {
+            self.setState(prevState => ({
             selectedNumbers: [],
             randomNumbersOfStars: Game.randomNumber(),
             answerIsCorrect: null,
             redraws: prevState.redraws - 1
-        }), this.updateDoneStatus);
+        }), self.updateDoneStatus);
+        }
+        if (this.state.selectedNumbers.length) {
+            if (confirm('Are you sure you want to to redraw the stars? You have numbers selected.')) {
+                doRedraw();
+            }
+        } else {
+            doRedraw();
+        }
     };
 
     removeSelectedNumbers = () => {
