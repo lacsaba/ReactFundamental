@@ -7,12 +7,13 @@ import Done from './Done.jsx';
 
 export default class Game extends React.Component {
     static randomNumber = () => 1 + Math.floor(Math.random() * 9);
+    static redrawCount = 5;
     state = {
         selectedNumbers: [],
         usedNumbers: [],
         randomNumbersOfStars: Game.randomNumber(),
         answerIsCorrect: null,
-        redraws: 5,
+        redraws: Game.redrawCount,
         doneStatus: null
     };
 
@@ -82,7 +83,7 @@ export default class Game extends React.Component {
             usedNumbers: [],
             selectedNumbers: [],
             answerIsCorrect: null,
-            redraws: 5,
+            redraws: Game.redrawCount,
             randomNumbersOfStars: Game.randomNumber(),
             doneStatus: null
         });
@@ -96,7 +97,9 @@ export default class Game extends React.Component {
     };
     updateDoneStatus = () => {
         this.setState(prevState => {
-            console.log(prevState.randomNumbersOfStars);
+            if (prevState.redraws === Game.redrawCount && prevState.usedNumbers.length === 9) {
+                return { doneStatus: 'You\'re the winner! Flawless victory!' };
+            }
             if (prevState.usedNumbers.length === 9) {
                 return { doneStatus: 'Done. Nice!' };
             }
