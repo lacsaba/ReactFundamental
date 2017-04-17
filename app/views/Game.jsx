@@ -45,7 +45,6 @@ export default class Game extends React.Component {
             this.setState(prevState => ({
                 usedNumbers: prevState.usedNumbers.concat(prevState.selectedNumbers),
                 selectedNumbers: [],
-                randomNumbersOfStars: Game.randomNumber(),
                 answerIsCorrect: null
             }), this.updateDoneStatus);
     }, 500)};
@@ -57,7 +56,6 @@ export default class Game extends React.Component {
         function doRedraw() {
             self.setState(prevState => ({
             selectedNumbers: [],
-            randomNumbersOfStars: Game.randomNumber(),
             answerIsCorrect: null,
             redraws: prevState.redraws - 1
         }), self.updateDoneStatus);
@@ -106,6 +104,7 @@ export default class Game extends React.Component {
             if (prevState.redraws === 0 && !this.possibleSolutions(prevState)) {
                 return { doneStatus: 'Game over! You lose.'};
             }
+            return { randomNumbersOfStars: Game.randomNumber() };
         });
     }
 
