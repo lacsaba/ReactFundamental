@@ -6,7 +6,14 @@ import Answer from './Answer.jsx';
 import Done from './Done.jsx';
 
 export default class Game extends React.Component {
-    static randomNumber = () => 1 + Math.floor(Math.random() * 9);
+    static randomNumber = () => {
+    // ez nem úgy néz ki, mint ami működik, meg egyébként sincs itt jó helyen.
+    document.getElementsByClassName('fade').className = 'col-4 fade';
+    setTimeout(() => {
+        document.getElementsByClassName('fade').className += 'in';
+    }, 2000);
+        return 1 + Math.floor(Math.random() * 9);
+    }
     static redrawCount = 5;
     state = {
         selectedNumbers: [],
