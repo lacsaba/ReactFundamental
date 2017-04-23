@@ -25,9 +25,16 @@ rules:
   class-methods-use-this: 0
   func-names: 0
   indent: 2
+  linebreak-style: ["error", "windows"]
   new-cap: 0
+  no-bitwise: ["error", { "allow": ["&", "<<"] }]
   no-plusplus: 0
   no-return-assign: 0
+  no-unused-expressions: ["error", {
+    "allowShortCircuit": true,
+    "allowTernary": true
+  }]
+  no-use-before-define: ["error", { "functions": false, "classes": true }]
   quote-props: 0
   template-curly-spacing: [2, "always"]
   comma-dangle: ["error", {
