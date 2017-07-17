@@ -6,6 +6,10 @@
   "repository": "https://github.com/lacsaba/ReactFundamental.git",
   "author": "Csaba Lakatos",
   "license": "MIT",
+  "scripts": {
+    "build": "webpack --progress --colors",
+    "watch": "webpack-dev-server --inline --hot --progress --colors"
+  },
   "dependencies": {
     "babel-polyfill": "^6.23.0",
     "bootstrap": "^3.3.7",
