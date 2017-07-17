@@ -1,1 +1,1 @@
-# ReactFundamental
+A simple game for learning React, Redux and Webpack fundamentals, based on the Pluralisght course: https://app.pluralsight.com/library/courses/react-js-getting-started
