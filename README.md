@@ -6,12 +6,12 @@ A simple game for learning React, Redux and Webpack fundamentals, based on the P
 npm install
 ```
 
-Simple build:
+## Simple build:
 ```bash
 npm run build
 ```
 
-Start dev server with watching changes:
+## Start dev server with watching changes:
 ```bash
 npm run watch
 ```
