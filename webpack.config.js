@@ -19,36 +19,13 @@ module.exports = {
         js: './app/index.js'
     },
     output: {
-        //path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, 'dist'),
         filename: 'bundle.js'
     },
     module: {
         rules: [
-            { test: /\.(js|jsx)$/, exclude: /node_modules/, use: 'babel-loader'}
-        ],
-        loaders: [
-            {
-                test: /\.css$/,
-                exclude: /node_modules/,
-                use: [
-                    {
-                        loader: 'style-loader',
-                    },
-                    {
-                        loader: 'css-loader',
-                        options: {
-                            sourceMap: true,
-                            importLoaders: 1,
-                        }
-                    },
-                    {
-                        loader: 'postcss-loader',
-                        options: {
-                            sourceMap: 'inline',
-                        }
-                    }
-                ]
-            }
+            { test: /\.(js|jsx)$/, exclude: /node_modules/, use: 'babel-loader'},
+            { test: /\.css$/, use: [ 'style-loader', 'css-loader' ] }
         ]
     },
     plugins,
