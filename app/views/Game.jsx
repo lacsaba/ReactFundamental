@@ -1,8 +1,9 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import * as gameActions from '../reduxComponents/actions/gameActions';
 import _ from 'lodash';
+import * as gameActions from '../reduxComponents/actions/gameActions';
+
 
 import Button from './Button.jsx';
 import Stars from './Stars.jsx';
@@ -11,6 +12,16 @@ import Answer from './Answer.jsx';
 import Done from './Done.jsx';
 
 class Game extends React.Component {
+  static redrawCount = 5;
+  static randomNumber = () => {
+    // ez nem úgy néz ki, mint ami működik, meg egyébként sincs itt jó helyen.
+    document.getElementsByClassName('fade').className = 'col-4 fade';
+    setTimeout(() => {
+      document.getElementsByClassName('fade').className += 'in';
+    }, 2000);
+    return 1 + Math.floor(Math.random() * 9);
+  }
+
   constructor(props, context) {
     super(props, context);
 
@@ -25,36 +36,19 @@ class Game extends React.Component {
       randomNumbersOfStars: Game.randomNumber(),
       answerIsCorrect: null,
       redraws: Game.redrawCount,
-      doneStatus: null
+      doneStatus: null,
     };
   }
 
-  static randomNumber = () => {
-    // ez nem úgy néz ki, mint ami működik, meg egyébként sincs itt jó helyen.
-    document.getElementsByClassName('fade').className = 'col-4 fade';
-    setTimeout(() => {
-      document.getElementsByClassName('fade').className += 'in';
-    }, 2000);
-    return 1 + Math.floor(Math.random() * 9);
-  }
-  static redrawCount = 5;
-
   selectNumber = (clickedNumber) => {
-    if (this.state.selectedNumbers.indexOf(clickedNumber) > -1
-      || this.state.usedNumbers.indexOf(clickedNumber) > -1) return;
+    if (this.props.selectedNumbers && (this.props.selectedNumbers.indexOf(clickedNumber) > -1
+      || this.state.usedNumbers.indexOf(clickedNumber) > -1)) return;
     this.props.actions.selectNumber(clickedNumber);
-    // this.setState(prevState => ({
-    //   selectedNumbers: prevState.selectedNumbers.concat(clickedNumber),
-    //   answerIsCorrect: null,
-    // }));
   };
 
   unselectNumber = (clickedNumber) => {
-    if (this.state.selectedNumbers.indexOf(clickedNumber) === -1) return;
-    this.setState(prevState => ({
-      selectedNumbers: prevState.selectedNumbers.filter((number) => clickedNumber !== number),
-      answerIsCorrect: null,
-    }));
+    if (this.props.selectedNumbers.indexOf(clickedNumber) === -1) return;
+    this.props.actions.unselectNumber(clickedNumber);
   };
 
   checkAnswer = () => {
@@ -136,7 +130,7 @@ class Game extends React.Component {
   render() {
     const {
       randomNumbersOfStars,
-      selectedNumbers,
+      //selectedNumbers,
       usedNumbers,
       answerIsCorrect,
       redraws,
@@ -148,32 +142,32 @@ class Game extends React.Component {
         <hr />
         <div className='row'>
           <div className='col-1' />
-          <Stars randomNumbersOfStars={randomNumbersOfStars} />
+          <Stars randomNumbersOfStars={ randomNumbersOfStars } />
           <Button
-            selectedNumbers={selectedNumbers}
-            answerIsCorrect={answerIsCorrect}
-            checkAnswer={this.checkAnswer}
-            acceptAnswer={this.acceptAnswer}
-            redraw={this.redraw}
-            redraws={redraws}
-            removeSelectedNumbers={this.removeSelectedNumbers}
-            doneStatus={doneStatus}
+            selectedNumbers={ this.props.selectedNumbers }
+            answerIsCorrect={ answerIsCorrect }
+            checkAnswer={ this.checkAnswer }
+            acceptAnswer={ this.acceptAnswer }
+            redraw={ this.redraw }
+            redraws={ redraws }
+            removeSelectedNumbers={ this.removeSelectedNumbers }
+            doneStatus={ doneStatus }
           />
           <Answer
-            selectedNumbers={selectedNumbers}
-            unselectNumber={this.unselectNumber}
+            selectedNumbers={ this.props.selectedNumbers }
+            unselectNumber={ this.unselectNumber }
           />
           <div className='col-1' />
         </div>
         <br />
         <Numbers
-          selectedNumbers={selectedNumbers}
-          usedNumbers={usedNumbers}
-          selectNumber={this.selectNumber}
-          doneStatus={doneStatus}
+          selectedNumbers={ this.props.selectedNumbers }
+          usedNumbers={ usedNumbers }
+          selectNumber={ this.selectNumber }
+          doneStatus={ doneStatus }
         />
         {doneStatus
-          ? <Done doneStatus={doneStatus} resetGame={this.resetGame} />
+          ? <Done doneStatus={ doneStatus } resetGame={ this.resetGame } />
           : ''
         }
       </div>
@@ -183,13 +177,13 @@ class Game extends React.Component {
 
 function mapStateToProps(state, ownProps) {
   return {
-    selectedNumbers: state.game
-  }
+    selectedNumbers: state.game.selectedNumbers,
+  };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(gameActions, dispatch)
+    actions: bindActionCreators(gameActions, dispatch),
   };
 }
 

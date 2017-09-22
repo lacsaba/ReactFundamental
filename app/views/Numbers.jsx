@@ -20,14 +20,14 @@ const Numbers = (props) => {
   return (
     <div className='text-center'>
       {Numbers.list.map((number) =>
-        <button
+        (<button
           key={ number }
           className={ numberClassName(number) }
           onClick={ () => props.selectNumber(number) }
           disabled={ props.doneStatus }
         >
           { number }
-        </button>)}
+        </button>))}
     </div>
   );
 };

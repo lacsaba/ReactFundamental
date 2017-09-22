@@ -1,8 +1,15 @@
 import * as types from './actionTypes';
 
-export function selectNumber(num) {
-    return {
-        type: types.SELECT_NUMBER,
-        num
-    };
+export function selectNumber(selectedNumber) {
+  return {
+    type: types.SELECT_NUMBER,
+    selectedNumber,
+  };
+}
+
+export function unselectNumber(selectedNumber) {
+  return {
+    type: types.UNSELECT_NUMBER,
+    selectedNumber,
+  };
 }

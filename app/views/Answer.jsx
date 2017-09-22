@@ -6,13 +6,13 @@ const Answer = (props) => {
     <div className='text-center col-4'>
       <div>
         { props.selectedNumbers.map((number) =>
-          <button
+          (<button
             key={ number }
             className='numbers'
             onClick={ () => props.unselectNumber(number) }
           >
             { number }
-          </button>) }
+          </button>)) }
       </div>
     </div>
   );
