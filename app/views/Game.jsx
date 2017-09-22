@@ -1,4 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import * as gameActions from '../reduxComponents/actions/gameActions';
 import _ from 'lodash';
 
 import Button from './Button.jsx';
@@ -7,7 +10,25 @@ import Numbers from './Numbers.jsx';
 import Answer from './Answer.jsx';
 import Done from './Done.jsx';
 
-export default class Game extends React.Component {
+class Game extends React.Component {
+  constructor(props, context) {
+    super(props, context);
+
+    this.selectNumber = this.selectNumber.bind(this);
+    this.unselectNumber = this.unselectNumber.bind(this);
+    this.checkAnswer = this.checkAnswer.bind(this);
+    this.acceptAnswer = this.acceptAnswer.bind(this);
+
+    this.state = {
+      selectedNumbers: [],
+      usedNumbers: [],
+      randomNumbersOfStars: Game.randomNumber(),
+      answerIsCorrect: null,
+      redraws: Game.redrawCount,
+      doneStatus: null
+    };
+  }
+
   static randomNumber = () => {
     // ez nem úgy néz ki, mint ami működik, meg egyébként sincs itt jó helyen.
     document.getElementsByClassName('fade').className = 'col-4 fade';
@@ -17,22 +38,15 @@ export default class Game extends React.Component {
     return 1 + Math.floor(Math.random() * 9);
   }
   static redrawCount = 5;
-  state = {
-    selectedNumbers: [],
-    usedNumbers: [],
-    randomNumbersOfStars: Game.randomNumber(),
-    answerIsCorrect: null,
-    redraws: Game.redrawCount,
-    doneStatus: null,
-  };
 
   selectNumber = (clickedNumber) => {
     if (this.state.selectedNumbers.indexOf(clickedNumber) > -1
       || this.state.usedNumbers.indexOf(clickedNumber) > -1) return;
-    this.setState(prevState => ({
-      selectedNumbers: prevState.selectedNumbers.concat(clickedNumber),
-      answerIsCorrect: null,
-    }));
+    this.props.actions.selectNumber(clickedNumber);
+    // this.setState(prevState => ({
+    //   selectedNumbers: prevState.selectedNumbers.concat(clickedNumber),
+    //   answerIsCorrect: null,
+    // }));
   };
 
   unselectNumber = (clickedNumber) => {
@@ -134,38 +148,52 @@ export default class Game extends React.Component {
         <hr />
         <div className='row'>
           <div className='col-1' />
-          <Stars randomNumbersOfStars={ randomNumbersOfStars } />
+          <Stars randomNumbersOfStars={randomNumbersOfStars} />
           <Button
-            selectedNumbers={ selectedNumbers }
-            answerIsCorrect={ answerIsCorrect }
-            checkAnswer={ this.checkAnswer }
-            acceptAnswer={ this.acceptAnswer }
-            redraw={ this.redraw }
-            redraws={ redraws }
-            removeSelectedNumbers={ this.removeSelectedNumbers }
-            doneStatus={ doneStatus }
+            selectedNumbers={selectedNumbers}
+            answerIsCorrect={answerIsCorrect}
+            checkAnswer={this.checkAnswer}
+            acceptAnswer={this.acceptAnswer}
+            redraw={this.redraw}
+            redraws={redraws}
+            removeSelectedNumbers={this.removeSelectedNumbers}
+            doneStatus={doneStatus}
           />
           <Answer
-            selectedNumbers={ selectedNumbers }
-            unselectNumber={ this.unselectNumber }
+            selectedNumbers={selectedNumbers}
+            unselectNumber={this.unselectNumber}
           />
           <div className='col-1' />
         </div>
         <br />
         <Numbers
-          selectedNumbers={ selectedNumbers }
-          usedNumbers={ usedNumbers }
-          selectNumber={ this.selectNumber }
-          doneStatus={ doneStatus }
+          selectedNumbers={selectedNumbers}
+          usedNumbers={usedNumbers}
+          selectNumber={this.selectNumber}
+          doneStatus={doneStatus}
         />
         {doneStatus
-          ? <Done doneStatus={ doneStatus } resetGame={ this.resetGame } />
+          ? <Done doneStatus={doneStatus} resetGame={this.resetGame} />
           : ''
         }
       </div>
     );
   }
 }
+
+function mapStateToProps(state, ownProps) {
+  return {
+    selectedNumbers: state.game
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(gameActions, dispatch)
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Game);
 
 function possibleCombinationSum(arr, n) {
   if (arr.indexOf(n) >= 0) { return true; }
