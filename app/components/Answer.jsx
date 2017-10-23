@@ -1,15 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Answer = (props) => {
+const Answer = ({ selectedNumbers, unselectNumber }) => {
   return (
     <div className='text-center col-4'>
       <div>
-        { props.selectedNumbers.map((number) =>
+        { selectedNumbers.map((number) =>
           (<button
             key={ number }
             className='numbers'
-            onClick={ () => props.unselectNumber(number) }
+            onClick={ () => unselectNumber(number) }
           >
             { number }
           </button>)) }
@@ -20,9 +20,10 @@ const Answer = (props) => {
 
 Answer.propTypes = {
   selectedNumbers: PropTypes.array,
+  unselectNumber: PropTypes.func.isRequired,
 };
 Answer.defaultProps = {
   selectedNumbers: [],
 };
 
-module.exports = Answer;
+export default Answer;

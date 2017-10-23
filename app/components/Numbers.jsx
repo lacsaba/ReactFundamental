@@ -2,16 +2,16 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
-const Numbers = (props) => {
+const Numbers = ({ selectedNumbers, usedNumbers, doneStatus, selectNumber }) => {
   const numberClassName = (number) => {
     let classes = 'numbers';
-    if (props.selectedNumbers.indexOf(number) > -1) {
+    if (selectedNumbers && selectedNumbers.indexOf(number) > -1) {
       classes += ' selected';
     }
-    if (props.usedNumbers.indexOf(number) > -1) {
+    if (selectedNumbers && usedNumbers.indexOf(number) > -1) {
       classes += ' used';
     }
-    if (props.doneStatus) {
+    if (doneStatus) {
       classes += ' numbers-disabled';
     }
     return classes;
@@ -23,8 +23,8 @@ const Numbers = (props) => {
         (<button
           key={ number }
           className={ numberClassName(number) }
-          onClick={ () => props.selectNumber(number) }
-          disabled={ props.doneStatus }
+          onClick={ () => selectNumber(number) }
+          disabled={ doneStatus }
         >
           { number }
         </button>))}
@@ -35,9 +35,14 @@ const Numbers = (props) => {
 Numbers.list = _.range(1, 10);
 Numbers.propTypes = {
   doneStatus: PropTypes.string,
+  selectedNumbers: PropTypes.arrayOf(PropTypes.number),
+  usedNumbers: PropTypes.arrayOf(PropTypes.number),
+  selectNumber: PropTypes.func.isRequired,
 };
 Numbers.defaultProps = {
   doneStatus: null,
+  selectedNumbers: [],
+  usedNumbers: [],
 };
 
-module.exports = Numbers;
+export default Numbers;

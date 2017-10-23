@@ -1,14 +1,20 @@
 import React from 'react';
 import { render } from 'react-dom';
-import configureStore from './reduxComponents/store/configureStore';
 import { Provider } from 'react-redux';
-import App from './views/App.jsx';
 import 'css/main.css';
+import configureStore from './store/configureStore';
+import { getRandomNumberOfStars } from './actions';
+import App from './containers/App';
+import { REDRAW_COUNT } from './helpers/constants';
 
-const store = configureStore();
+
+const store = configureStore({ game: { redraws: REDRAW_COUNT } });
+
+store.dispatch(getRandomNumberOfStars());
 
 render(
-    <Provider store={store}>
-        <App />
-    </Provider>, 
-    document.getElementById('app'));
+  <Provider store={ store }>
+    <App />
+  </Provider>,
+  document.getElementById('app')
+);

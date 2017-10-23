@@ -1,17 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const Button = (props) => {
+const Button = ({ answerIsCorrect, selectedNumbers,
+  removeSelectedNumbers, redraw, redraws, doneStatus, checkAnswer }) => {
   let button;
-  switch (props.answerIsCorrect) {
+  switch (answerIsCorrect) {
     case true:
       button = <button className='btn btn-success'><i className='fa fa-check' /></button>;
       break;
     case false:
-      button = <button className='btn btn-danger' onClick={ props.removeSelectedNumbers }><i className='fa fa-times' /></button>;
+      button = <button className='btn btn-danger' onClick={ removeSelectedNumbers }><i className='fa fa-times' /></button>;
       break;
     default:
-      button = <button disabled={ props.selectedNumbers.length === 0 } className='btn' onClick={ props.checkAnswer }>=?</button>;
+      button = <button disabled={ selectedNumbers.length === 0 } className='btn' onClick={ checkAnswer }>=?</button>;
       break;
   }
   return (
@@ -20,10 +21,10 @@ const Button = (props) => {
       <br /><br />
       <button
         className='btn btn-warning btn-sm'
-        onClick={ props.redraw }
-        disabled={ !props.redraws || props.doneStatus }
+        onClick={ redraw }
+        disabled={ !redraws || doneStatus }
       >
-        { props.redraws } <i className='fa fa-refresh' />
+        { redraws } <i className='fa fa-refresh' />
       </button>
     </div>
   );
@@ -44,4 +45,4 @@ Button.defaultProps = {
   selectedNumbers: [],
 };
 
-module.exports = Button;
+export default Button;
