@@ -17,17 +17,13 @@ export default function gameReducer(state = {}, action) {
     }
     case types.UNSELECT_NUMBER: {
       if (state.selectedNumbers.indexOf(action.selectedNumber) === -1) return state;
-      return Object.assign({}, state, { selectedNumbers: state.selectedNumbers.filter(item => item !== action.selectedNumber) });
+      return Object.assign({}, state, { selectedNumbers: state.selectedNumbers.filter(item => item !== action.selectedNumber), answerIsCorrect: null });
     }
-    case types.CHECK_ANSWER: {
-      return Object.assign({}, state, { answerIsCorrect: state.selectedNumbers.reduce((acc, n) => acc + n, 0) === state.randomNumberOfStars });
-    }
-    case types.ACCEPT_ANSWER: {
-      state.answerIsCorrect && setTimeout(() => {
-        return Object.assign({}, state, { usedNumbers: state.usedNumbers.concat(state.selectedNumbers), selectedNumbers: [], answerIsCorrect: null });
-        // call updateDoneStatus
-      }, 500);
-      return state;
+    case types.PROCESS_ANSWER: {
+      if (state.selectedNumbers.reduce((acc, n) => acc + n, 0) === state.randomNumberOfStars) {
+        return Object.assign({}, state, { usedNumbers: state.usedNumbers.concat(state.selectedNumbers), selectedNumbers: [], randomNumberOfStars: randomNumber(), answerIsCorrect: true });
+      }
+      return Object.assign({}, state, { answerIsCorrect: false });
     }
     case types.SET_RANDOM_NUMBER_OF_STARS: {
       return Object.assign({}, state, { randomNumberOfStars: action.randomNumberOfStars });
@@ -36,7 +32,6 @@ export default function gameReducer(state = {}, action) {
       return Object.assign({}, state, { selectedNumbers: [], answerIsCorrect: null });
     }
     case types.RESET_GAME: {
-      // TODO: call initialState
       return {
         usedNumbers: [],
         selectedNumbers: [],

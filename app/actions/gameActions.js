@@ -14,15 +14,9 @@ export function unselectNumber(selectedNumber) {
   };
 }
 
-export function checkAnswer() {
+export function processAnswer() {
   return {
-    type: types.CHECK_ANSWER,
-  };
-}
-
-export function acceptAnswer() {
-  return {
-    type: types.ACCEPT_ANSWER,
+    type: types.PROCESS_ANSWER,
   };
 }
 

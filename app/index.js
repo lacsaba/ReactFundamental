@@ -8,7 +8,7 @@ import App from './containers/App';
 import { REDRAW_COUNT } from './helpers/constants';
 
 
-const store = configureStore({ game: { redraws: REDRAW_COUNT } });
+const store = configureStore({ game: { redraws: REDRAW_COUNT, usedNumbers: [], selectedNumber: [] } });
 
 store.dispatch(getRandomNumberOfStars());
 
