@@ -51,7 +51,7 @@ export default function gameReducer(state = {}, action) {
       if (state.redraws === 0 && !possibleSolutions(state)) {
         return Object.assign({}, state, { doneStatus: 'Game over! You lose.' });
       }
-      return Object.assign({}, state, { randomNumberOfStars: randomNumber() });
+      return state;
     }
     case types.REDRAW: {
       const doRedraw = () => {
@@ -67,6 +67,7 @@ export default function gameReducer(state = {}, action) {
         return doRedraw();
       }
       // call updateDoneStatus
+      break;
     }
     default:
       return state;
