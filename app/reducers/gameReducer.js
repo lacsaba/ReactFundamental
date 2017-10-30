@@ -3,7 +3,26 @@ import { REDRAW_COUNT } from '../helpers/constants';
 import possibleSolutions from '../helpers/combinations';
 import randomNumber from '../helpers/random';
 
-export default function gameReducer(state = {}, action) {
+export const doneStatus = (state = {}, action) => {
+  switch (action.type) {
+    case types.UPDATE_DONE_STATUS: {
+      if (state.redraws === REDRAW_COUNT && state.usedNumbers.length === 9) {
+        return 'You\'re the winner! Flawless victory!';
+      }
+      if (state.usedNumbers.length === 9) {
+        return 'Done. Nice!';
+      }
+      if (state.redraws === 0 && !possibleSolutions(state)) {
+        return 'Game over! You lose.';
+      }
+      return '';
+    }
+    default:
+      return '';
+  }
+};
+
+export const game = (state = {}, action) => {
   switch (action.type) {
     case types.SELECT_NUMBER: {
       if (state.selectedNumbers && (state.selectedNumbers.indexOf(action.clickedNumber) > -1
@@ -21,7 +40,14 @@ export default function gameReducer(state = {}, action) {
     }
     case types.PROCESS_ANSWER: {
       if (state.selectedNumbers.reduce((acc, n) => acc + n, 0) === state.randomNumberOfStars) {
-        return Object.assign({}, state, { usedNumbers: state.usedNumbers.concat(state.selectedNumbers), selectedNumbers: [], randomNumberOfStars: randomNumber(), answerIsCorrect: true });
+        const newState = Object.assign({}, state, {
+          usedNumbers: [...state.usedNumbers, ...state.selectedNumbers],
+          selectedNumbers: [],
+          randomNumberOfStars: randomNumber(),
+          answerIsCorrect: true,
+        });
+
+        return Object.assign({}, newState, { doneStatus: doneStatus(newState, { type: types.UPDATE_DONE_STATUS }) });
       }
       return Object.assign({}, state, { answerIsCorrect: false });
     }
@@ -41,21 +67,29 @@ export default function gameReducer(state = {}, action) {
         doneStatus: null,
       };
     }
-    case types.UPDATE_DONE_STATUS: {
-      if (state.redraws === REDRAW_COUNT && state.usedNumbers.length === 9) {
-        return Object.assign({}, state, { doneStatus: 'You\'re the winner! Flawless victory!' });
-      }
-      if (state.usedNumbers.length === 9) {
-        return Object.assign({}, state, { doneStatus: 'Done. Nice!' });
-      }
-      if (state.redraws === 0 && !possibleSolutions(state)) {
-        return Object.assign({}, state, { doneStatus: 'Game over! You lose.' });
-      }
-      return state;
-    }
+    // case types.UPDATE_DONE_STATUS: {
+    //   if (state.redraws === REDRAW_COUNT && state.usedNumbers.length === 9) {
+    //     return Object.assign({}, state, { doneStatus: 'You\'re the winner! Flawless victory!' });
+    //   }
+    //   if (state.usedNumbers.length === 9) {
+    //     return Object.assign({}, state, { doneStatus: 'Done. Nice!' });
+    //   }
+    //   if (state.redraws === 0 && !possibleSolutions(state)) {
+    //     return Object.assign({}, state, { doneStatus: 'Game over! You lose.' });
+    //   }
+    //   return state;
+    // }
     case types.REDRAW: {
       const doRedraw = () => {
-        return Object.assign({}, state, { selectedNumbers: [], answerIsCorrect: null, redraws: state.redraws - 1, randomNumberOfStars: randomNumber() });
+        const newState = Object.assign({}, state, {
+          selectedNumbers: [],
+          answerIsCorrect: null,
+          redraws: state.redraws - 1,
+          randomNumberOfStars: randomNumber(),
+        });
+
+        return Object.assign({}, newState,
+          { doneStatus: doneStatus(newState, { type: types.UPDATE_DONE_STATUS }) });
       };
 
       if (state.redraws <= 0) return state;
@@ -67,9 +101,9 @@ export default function gameReducer(state = {}, action) {
         return doRedraw();
       }
       // call updateDoneStatus
-      break;
+      return state;
     }
     default:
       return state;
   }
-}
+};

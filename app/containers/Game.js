@@ -75,6 +75,7 @@ function mapStateToProps(state) {
     usedNumbers: state.game.usedNumbers,
     randomNumberOfStars: state.game.randomNumberOfStars,
     redraws: state.game.redraws,
+    doneStatus: state.game.doneStatus,
   };
 }
 
