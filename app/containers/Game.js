@@ -24,7 +24,8 @@ const Game = ({ randomNumberOfStars, selectedNumbers, usedNumbers,
         <Button
           selectedNumbers={ selectedNumbers }
           answerIsCorrect={ answerIsCorrect }
-          processAnswer={ actions.processAnswer }
+          checkAnswer={ actions.checkAnswer }
+          acceptAnswer={ actions.acceptAnswer }
           redraw={ actions.redraw }
           redraws={ redraws }
           removeSelectedNumbers={ actions.removeSelectedNumbers }
@@ -70,17 +71,18 @@ Game.defaultProps = {
 
 function mapStateToProps(state) {
   return {
-    selectedNumbers: state.game.selectedNumbers,
     answerIsCorrect: state.game.answerIsCorrect,
-    usedNumbers: state.game.usedNumbers,
+    doneStatus: state.game.doneStatus,
     randomNumberOfStars: state.game.randomNumberOfStars,
     redraws: state.game.redraws,
+    selectedNumbers: state.game.selectedNumbers,
+    usedNumbers: state.game.usedNumbers,
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    actions: bindActionCreators(gameActions, dispatch),
+    actions: bindActionCreators(gameActions, dispatch)
   };
 }
 

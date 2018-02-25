@@ -2,14 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const Button = ({ answerIsCorrect, selectedNumbers,
-  removeSelectedNumbers, redraw, redraws, doneStatus, processAnswer }) => {
+  removeSelectedNumbers, redraw, redraws, doneStatus, checkAnswer }) => {
   let button;
   switch (answerIsCorrect) {
     case false:
       button = <button className='btn btn-danger' onClick={ removeSelectedNumbers }><i className='fa fa-times' /></button>;
       break;
     default:
-      button = <button disabled={ selectedNumbers.length === 0 } className='btn' onClick={ processAnswer }>=?</button>;
+      button = <button disabled={ selectedNumbers.length === 0 } className='btn' onClick={ checkAnswer }>=?</button>;
       break;
   }
   return (
@@ -29,7 +29,7 @@ const Button = ({ answerIsCorrect, selectedNumbers,
 
 Button.propTypes = {
   answerIsCorrect: PropTypes.bool,
-  processAnswer: PropTypes.func.isRequired,
+  checkAnswer: PropTypes.func.isRequired,
   doneStatus: PropTypes.string,
   redraw: PropTypes.func.isRequired,
   redraws: PropTypes.number.isRequired,

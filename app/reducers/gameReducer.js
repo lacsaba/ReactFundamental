@@ -19,11 +19,8 @@ export default function gameReducer(state = {}, action) {
       if (state.selectedNumbers.indexOf(action.selectedNumber) === -1) return state;
       return Object.assign({}, state, { selectedNumbers: state.selectedNumbers.filter(item => item !== action.selectedNumber), answerIsCorrect: null });
     }
-    case types.PROCESS_ANSWER: {
-      if (state.selectedNumbers.reduce((acc, n) => acc + n, 0) === state.randomNumberOfStars) {
-        return Object.assign({}, state, { usedNumbers: state.usedNumbers.concat(state.selectedNumbers), selectedNumbers: [], randomNumberOfStars: randomNumber(), answerIsCorrect: true });
-      }
-      return Object.assign({}, state, { answerIsCorrect: false });
+    case types.ACCEPT_ANSWER: {
+      return Object.assign({}, state, { usedNumbers: state.usedNumbers.concat(state.selectedNumbers), selectedNumbers: [], answerIsCorrect: null });
     }
     case types.SET_RANDOM_NUMBER_OF_STARS: {
       return Object.assign({}, state, { randomNumberOfStars: action.randomNumberOfStars });
